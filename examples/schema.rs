@@ -3,7 +3,7 @@ use std::fs::create_dir_all;
 
 use cosmwasm_schema::{export_schema, remove_schemas, schema_for};
 
-use backer::msg::{CountResponse, ExecuteMsg, InstantiateMsg, QueryMsg};
+use backer::msg::{Project, ExecuteMsg, InstantiateMsg, QueryMsg};
 use backer::state::State;
 
 fn main() {
@@ -16,5 +16,5 @@ fn main() {
     export_schema(&schema_for!(ExecuteMsg), &out_dir);
     export_schema(&schema_for!(QueryMsg), &out_dir);
     export_schema(&schema_for!(State), &out_dir);
-    export_schema(&schema_for!(CountResponse), &out_dir);
+    export_schema(&schema_for!(Project), &out_dir);
 }

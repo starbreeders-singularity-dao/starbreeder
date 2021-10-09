@@ -5,11 +5,11 @@
     {
       "type": "object",
       "required": [
-        "increment"
+        "create_project"
       ],
       "properties": {
-        "increment": {
-          "type": "object"
+        "create_project": {
+          "$ref": "#/definitions/MsgCreateProject"
         }
       },
       "additionalProperties": false
@@ -17,23 +17,60 @@
     {
       "type": "object",
       "required": [
-        "reset"
+        "back_project"
       ],
       "properties": {
-        "reset": {
-          "type": "object",
-          "required": [
-            "count"
-          ],
-          "properties": {
-            "count": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
+        "back_project": {
+          "$ref": "#/definitions/MsgBackProject"
         }
       },
       "additionalProperties": false
     }
-  ]
+  ],
+  "definitions": {
+    "MsgBackProject": {
+      "type": "object",
+      "required": [
+        "amount",
+        "denom",
+        "id"
+      ],
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "format": "uint128",
+          "minimum": 0.0
+        },
+        "denom": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "uint128",
+          "minimum": 0.0
+        }
+      }
+    },
+    "MsgCreateProject": {
+      "type": "object",
+      "required": [
+        "description",
+        "funding_requested",
+        "title"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "funding_requested": {
+          "type": "integer",
+          "format": "uint128",
+          "minimum": 0.0
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    }
+  }
 }
