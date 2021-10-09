@@ -21,13 +21,13 @@ pub struct MsgCreateProject {
     pub title: String,
     pub description: String,
     pub funding_requested: u128,
+    pub denom: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct MsgBackProject {
     pub id: u128,
     pub amount: u128,
-    pub denom: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -44,4 +44,5 @@ pub struct Project {
     pub description: String,
     pub funding_requested: u128,
     pub funding_raised: u128,
+    pub denom: String,
 }

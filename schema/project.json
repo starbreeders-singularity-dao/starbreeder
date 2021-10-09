@@ -3,6 +3,7 @@
   "title": "Project",
   "type": "object",
   "required": [
+    "denom",
     "description",
     "funding_raised",
     "funding_requested",
@@ -10,6 +11,9 @@
     "title"
   ],
   "properties": {
+    "denom": {
+      "type": "string"
+    },
     "description": {
       "type": "string"
     },

@@ -32,7 +32,6 @@
       "type": "object",
       "required": [
         "amount",
-        "denom",
         "id"
       ],
       "properties": {
@@ -40,9 +39,6 @@
           "type": "integer",
           "format": "uint128",
           "minimum": 0.0
-        },
-        "denom": {
-          "type": "string"
         },
         "id": {
           "type": "integer",
@@ -54,11 +50,15 @@
     "MsgCreateProject": {
       "type": "object",
       "required": [
+        "denom",
         "description",
         "funding_requested",
         "title"
       ],
       "properties": {
+        "denom": {
+          "type": "string"
+        },
         "description": {
           "type": "string"
         },

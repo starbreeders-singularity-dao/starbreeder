@@ -55,6 +55,7 @@ pub fn create_project(deps: DepsMut, msg: MsgCreateProject) -> Result<Response, 
         description: msg.description,
         funding_requested: msg.funding_requested,
         funding_raised: 0,
+        denom: msg.denom,
     });
     STATE.save(deps.storage, &state)?;
 
@@ -73,12 +74,12 @@ pub fn back_project(deps: DepsMut, msg: MsgBackProject) -> Result<Response, Cont
     // TODO add validation
 
     p.funding_raised += msg.amount;
-
+    let denom = p.denom.clone();
     STATE.save(deps.storage, &state)?;
     Ok(Response::new().add_message(BankMsg::Send {
         to_address: state.pool.into_string(),
         amount: vec![Coin {
-            denom: msg.denom,
+            denom: denom,
             amount: Uint128::new(msg.amount),
         }],
     }))
