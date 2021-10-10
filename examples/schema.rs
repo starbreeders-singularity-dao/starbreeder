@@ -3,7 +3,7 @@ use std::fs::create_dir_all;
 
 use cosmwasm_schema::{export_schema, remove_schemas, schema_for};
 
-use backer::msg::{Project, ExecuteMsg, InstantiateMsg, QueryMsg};
+use backer::msg::{ExecuteMsg, InstantiateMsg, Project, QueryMsg};
 use backer::state::State;
 
 fn main() {

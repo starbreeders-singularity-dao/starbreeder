@@ -9,7 +9,6 @@ pub enum ContractError {
     #[error("Unauthorized")]
     Unauthorized {},
 
-
     #[error("NotFound")]
     NotFound {},
     // Add any other custom errors you like here.
