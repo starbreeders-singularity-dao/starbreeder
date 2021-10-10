@@ -50,7 +50,7 @@ pub fn create_project(deps: DepsMut, msg: MsgCreateProject) -> Result<Response, 
     let mut state = STATE.load(deps.storage)?;
     let id = (state.projects.len() + 1) as u128;
     state.projects.push(Project {
-        id: id.clone(),
+        id,
         title: msg.title,
         description: msg.description,
         funding_requested: msg.funding_requested,
@@ -79,7 +79,7 @@ pub fn back_project(deps: DepsMut, msg: MsgBackProject) -> Result<Response, Cont
     Ok(Response::new().add_message(BankMsg::Send {
         to_address: state.pool.into_string(),
         amount: vec![Coin {
-            denom: denom,
+            denom,
             amount: Uint128::new(msg.amount),
         }],
     }))
@@ -96,11 +96,8 @@ pub fn get_project(deps: Deps, id: u128) -> StdResult<Project> {
     let state = STATE.load(deps.storage)?;
     let p = state
         .projects
-        .get(id.clone() as usize)
-        .ok_or(StdError::not_found(format!(
-            "project with id {} was not found",
-            id
-        )))?;
+        .get(id as usize)
+        .ok_or_else(|| StdError::not_found(format!("project with id {} was not found", id)))?;
 
     Ok(p.clone())
 }
