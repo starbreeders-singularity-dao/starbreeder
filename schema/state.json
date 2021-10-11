@@ -30,6 +30,9 @@
         "funding_raised",
         "funding_requested",
         "id",
+        "legal_contract",
+        "lockup_period",
+        "thumbnail",
         "title"
       ],
       "properties": {
@@ -40,9 +43,22 @@
           "type": "string"
         },
         "funding_raised": {
-          "type": "integer",
-          "format": "uint128",
-          "minimum": 0.0
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "$ref": "#/definitions/Addr"
+              },
+              {
+                "type": "integer",
+                "format": "uint128",
+                "minimum": 0.0
+              }
+            ],
+            "maxItems": 2,
+            "minItems": 2
+          }
         },
         "funding_requested": {
           "type": "integer",
@@ -53,6 +69,17 @@
           "type": "integer",
           "format": "uint128",
           "minimum": 0.0
+        },
+        "legal_contract": {
+          "type": "string"
+        },
+        "lockup_period": {
+          "type": "integer",
+          "format": "uint128",
+          "minimum": 0.0
+        },
+        "thumbnail": {
+          "type": "string"
         },
         "title": {
           "type": "string"

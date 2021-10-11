@@ -53,6 +53,9 @@
         "denom",
         "description",
         "funding_requested",
+        "legal_contract",
+        "lockup_period",
+        "thumbnail",
         "title"
       ],
       "properties": {
@@ -66,6 +69,17 @@
           "type": "integer",
           "format": "uint128",
           "minimum": 0.0
+        },
+        "legal_contract": {
+          "type": "string"
+        },
+        "lockup_period": {
+          "type": "integer",
+          "format": "uint128",
+          "minimum": 0.0
+        },
+        "thumbnail": {
+          "type": "string"
         },
         "title": {
           "type": "string"

@@ -37,24 +37,29 @@ pub fn instantiate(
 pub fn execute(
     deps: DepsMut,
     _env: Env,
-    _info: MessageInfo,
+    info: MessageInfo,
     msg: ExecuteMsg,
 ) -> Result<Response, ContractError> {
     match msg {
         ExecuteMsg::CreateProject(m) => create_project(deps, m),
-        ExecuteMsg::BackProject(m) => back_project(deps, m),
+        ExecuteMsg::BackProject(m) => back_project(deps, info, m),
     }
 }
 
 pub fn create_project(deps: DepsMut, msg: MsgCreateProject) -> Result<Response, ContractError> {
+    msg.validate()?;
+
     let mut state = STATE.load(deps.storage)?;
     let id = (state.projects.len() + 1) as u128;
     state.projects.push(Project {
         id,
+        thumbnail: msg.thumbnail,
         title: msg.title,
         description: msg.description,
+        legal_contract: msg.legal_contract,
         funding_requested: msg.funding_requested,
-        funding_raised: 0,
+        funding_raised: Vec::new(),
+        lockup_period: msg.lockup_period,
         denom: msg.denom,
     });
     STATE.save(deps.storage, &state)?;
@@ -64,16 +69,31 @@ pub fn create_project(deps: DepsMut, msg: MsgCreateProject) -> Result<Response, 
         .add_attribute("project_id", id.to_string().as_str()))
 }
 
-pub fn back_project(deps: DepsMut, msg: MsgBackProject) -> Result<Response, ContractError> {
+pub fn back_project(
+    deps: DepsMut,
+    info: MessageInfo,
+    msg: MsgBackProject,
+) -> Result<Response, ContractError> {
     let mut state = STATE.load(deps.storage)?;
     let p = state
         .projects
         .get_mut(msg.id as usize)
         .ok_or(ContractError::NotFound {})?;
 
-    // TODO add validation
+    let backer_index = p
+        .funding_raised
+        .iter()
+        .position(|backer| info.sender == backer.0);
 
-    p.funding_raised += msg.amount;
+    match backer_index {
+        Some(i) => {
+            let backer = p.funding_raised.get(i).unwrap().clone();
+            p.funding_raised
+                .insert(i, (backer.0, backer.1 + msg.amount))
+        }
+        None => p.funding_raised.push((info.sender, msg.amount)),
+    }
+
     let denom = p.denom.clone();
     STATE.save(deps.storage, &state)?;
     Ok(Response::new().add_message(BankMsg::Send {
