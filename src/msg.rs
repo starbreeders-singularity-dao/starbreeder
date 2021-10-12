@@ -24,8 +24,8 @@ pub struct MsgCreateProject {
     pub title: String,
     pub description: String,
     pub legal_contract: String,
-    pub funding_requested: u128,
-    pub lockup_period: u128,
+    pub funding_requested: u64,
+    pub lockup_period: u64,
     pub denom: String,
 }
 
@@ -67,27 +67,27 @@ impl MsgCreateProject {
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct MsgBackProject {
-    pub id: u128,
-    pub amount: u128,
+    pub id: u64,
+    pub amount: u64,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum QueryMsg {
     // GetCount returns the current count as a json-encoded number
-    GetProject { id: u128 },
+    GetProject { id: u64 },
 }
 
 // TODO store backers in map
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct Project {
-    pub id: u128,
+    pub id: u64,
     pub thumbnail: String,
     pub title: String,
     pub description: String,
     pub legal_contract: String,
-    pub funding_requested: u128,
-    pub funding_raised: Vec<(Addr, u128)>,
-    pub lockup_period: u128,
+    pub funding_requested: u64,
+    pub funding_raised: Vec<(Addr, u64)>,
+    pub lockup_period: u64,
     pub denom: String,
 }

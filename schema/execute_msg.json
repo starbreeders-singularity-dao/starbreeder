@@ -37,12 +37,12 @@
       "properties": {
         "amount": {
           "type": "integer",
-          "format": "uint128",
+          "format": "uint64",
           "minimum": 0.0
         },
         "id": {
           "type": "integer",
-          "format": "uint128",
+          "format": "uint64",
           "minimum": 0.0
         }
       }
@@ -67,7 +67,7 @@
         },
         "funding_requested": {
           "type": "integer",
-          "format": "uint128",
+          "format": "uint64",
           "minimum": 0.0
         },
         "legal_contract": {
@@ -75,7 +75,7 @@
         },
         "lockup_period": {
           "type": "integer",
-          "format": "uint128",
+          "format": "uint64",
           "minimum": 0.0
         },
         "thumbnail": {

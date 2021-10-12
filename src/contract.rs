@@ -50,7 +50,7 @@ pub fn create_project(deps: DepsMut, msg: MsgCreateProject) -> Result<Response, 
     msg.validate()?;
 
     let mut state = STATE.load(deps.storage)?;
-    let id = (state.projects.len() + 1) as u128;
+    let id = state.projects.len() as u64;
     state.projects.push(Project {
         id,
         thumbnail: msg.thumbnail,
@@ -100,7 +100,7 @@ pub fn back_project(
         to_address: state.pool.into_string(),
         amount: vec![Coin {
             denom,
-            amount: Uint128::new(msg.amount),
+            amount: Uint128::new(msg.amount as u128),
         }],
     }))
 }
@@ -112,7 +112,7 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     }
 }
 
-pub fn get_project(deps: Deps, id: u128) -> StdResult<Project> {
+pub fn get_project(deps: Deps, id: u64) -> StdResult<Project> {
     let state = STATE.load(deps.storage)?;
     let p = state
         .projects
