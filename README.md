@@ -4,6 +4,13 @@
 
 Create a directory just for this project - will refer to it as "home" directory.
 
+Clone the backer repository into the home directory
+```
+git clone git@github.com:TommyToken/fansquad.git
+cd fansquad
+git checkout cosmwasm
+```
+
 ## Install terrad and setup accounts
 You will need to install terrad-v0.5.6-oracle
 
