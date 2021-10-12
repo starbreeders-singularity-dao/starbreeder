@@ -113,4 +113,24 @@ query_result:
 Lets back the project!
 
 ```
+terrad tx wasm execute terra1pcknsatx5ceyfu6zvtmz3yr8auumzrdts4ax4a '{"back_project":{"id":0,"amount":1200}}' 1201uusd --from user1 --chain-id=localterra --fees=34000uusd --broadcast-mode=block
 ```
+Backed the project with 1200 uusd
+
+Lets get the project info again!
+```
+query_result:
+  denom: uusd
+  description: decentralized crowd funding!
+  funding_raised:
+  - - terra1dcegyrekltswvyy0xy69ydgxn9x8x32zdtapd8
+    - 1200
+  funding_requested: 1e+06
+  id: 0
+  legal_contract: ""
+  lockup_period: 0
+  thumbnail: ""
+  title: backer
+```
+
+The funding raised section is showing that account with address terra1dcegyrekltswvyy0xy69ydgxn9x8x32zdtapd8 has backed the project with 1200 uusd
