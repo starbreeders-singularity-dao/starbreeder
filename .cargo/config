@@ -1,4 +1,5 @@
 [alias]
-wasm = "run-script optimize"
+wasm = "build --release --target wasm32-unknown-unknown"
+artifacts = "run-script optimize"
 unit-test = "test --lib"
 schema = "run --example schema"

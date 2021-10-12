@@ -40,7 +40,7 @@ Open up a seperate terminal, go to the "home" directory and run these commands
 
 Now from the backer repository run these commands!
 ```
-> cargo wasm
+> cargo artifacts
 > terrad tx wasm store artifacts/backer.wasm --from user1 --chain-id=localterra --gas=auto --fees=100000uluna --broadcast-mode=block
 ```
 You should get an output like this
