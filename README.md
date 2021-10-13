@@ -62,10 +62,10 @@ You will need to install terrad-v0.5.6-oracle
 
 Run these commands from the "home" directory
 ```
-> git clone git@github.com:terra-money/core.git
-> cd core
-> git checkout v0.5.6-oracle
-> make install
+git clone git@github.com:terra-money/core.git
+cd core
+git checkout v0.5.6-oracle
+make install
 ```
 This should install the correct terrad version.
 
@@ -73,8 +73,8 @@ Next you will need to create 2 accounts - one for the pool and another to intera
 
 Run these commands
 ```
-> echo "cabin undo always radar expand hidden crack tiny waste trouble enroll foster defy shrimp dentist effort chuckle domain ceiling three drop amateur around easy" | terrad keys add pool --recover
-> echo "satisfy adjust timber high purchase tuition stool faith fine install that you unaware feed domain license impose boss human eager hat rent enjoy dawn" | terrad keys add user1 --recover
+echo "cabin undo always radar expand hidden crack tiny waste trouble enroll foster defy shrimp dentist effort chuckle domain ceiling three drop amateur around easy" | terrad keys add pool --recover
+echo "satisfy adjust timber high purchase tuition stool faith fine install that you unaware feed domain license impose boss human eager hat rent enjoy dawn" | terrad keys add user1 --recover
 ```
 
 The account "pool" will have zero balance while "user1" account has some existing balance since its a special account
@@ -84,17 +84,17 @@ To test our smart contract we need to add the contract to the blockchain. Adding
 
 Open up a seperate terminal, go to the "home" directory and run these commands
 ```
-> git clone git@github.com:terra-money/LocalTerra.git
-> cd LocalTerra
-> docker-compose up
+git clone git@github.com:terra-money/LocalTerra.git
+cd LocalTerra
+docker-compose up
 ```
 
 ## Upload and initialize smart contract
 
 Now from the backer repository run these commands!
 ```
-> cargo artifacts
-> terrad tx wasm store artifacts/backer.wasm --from user1 --chain-id=localterra --gas=auto --fees=100000uluna --broadcast-mode=block
+cargo artifacts
+terrad tx wasm store artifacts/backer.wasm --from user1 --chain-id=localterra --gas=auto --fees=100000uluna --broadcast-mode=block
 ```
 You should get an output like this
 ```
@@ -132,7 +132,7 @@ We have uploaded the contract now we need to initialize it.
 
 Run these commands. Make sure to use the correct code_id!
 ```
-> terrad tx wasm instantiate 3 '{"pool":"terra13nfhuh80ppf5lqsrafdnlw9n9mxrpg3rzf6wk9"}' --from user1 --chain-id=localterra --fees=10000uluna --gas=auto --broadcast-mode=block
+terrad tx wasm instantiate 3 '{"pool":"terra13nfhuh80ppf5lqsrafdnlw9n9mxrpg3rzf6wk9"}' --from user1 --chain-id=localterra --fees=10000uluna --gas=auto --broadcast-mode=block
 ```
 
 ## Interact with the contract
@@ -140,14 +140,14 @@ Run these commands. Make sure to use the correct code_id!
 We will now create a new project. Note the contract address frorm the previous command - mine was "terra19zpyd046u4swqpksr3n44cej4j8pg6ah2y6dcg".
 Run the command with proper contract address!
 ```
-> terrad tx wasm execute terra19zpyd046u4swqpksr3n44cej4j8pg6ah2y6dcg '{"create_project":{"title":"backer","description":"decentralized crowd funding!","funding_requested":1000000,"denom":"uusd","legal_contract":"","lockup_period":0,"thumbnail":""}}' --from user1 --chain-id=localterra --fees=1000000uluna --gas=auto --broadcast-mode=block
+terrad tx wasm execute terra19zpyd046u4swqpksr3n44cej4j8pg6ah2y6dcg '{"create_project":{"title":"backer","description":"decentralized crowd funding!","funding_requested":1000000,"denom":"uusd","legal_contract":"","lockup_period":0,"thumbnail":""}}' --from user1 --chain-id=localterra --fees=1000000uluna --gas=auto --broadcast-mode=block
 ```
 Note the project_id - mine is "0".
 
 Congrats you created a project! Lets query to get project details!
 
 ```
-> terrad query wasm contract-store terra1pcknsatx5ceyfu6zvtmz3yr8auumzrdts4ax4a '{"get_project":{"id":0}}'
+terrad query wasm contract-store terra1pcknsatx5ceyfu6zvtmz3yr8auumzrdts4ax4a '{"get_project":{"id":0}}'
 ```
 You should see something like this!
 ```
