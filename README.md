@@ -2,7 +2,7 @@
 
 # Testnet Demo
 
-The contract is live on bombay testnet! contract address - terra18z4r4u8e9gn2v2tusgjwxc8q67d60f6g63nfe5
+The contract is live on bombay testnet! contract address - terra1l4l7rkf9cmyyn73xtnuv8jkwlrftcpwtwlga7q
 
 To create a project navigate to the "Contracts" section in "station.terra.money". 
 Find the contract with search bar using the address and click on the "Interact" button.

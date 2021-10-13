@@ -87,9 +87,8 @@ pub fn back_project(
 
     match backer_index {
         Some(i) => {
-            let backer = p.funding_raised.get(i).unwrap().clone();
-            p.funding_raised
-                .insert(i, (backer.0, backer.1 + msg.amount))
+            let backer = p.funding_raised.get_mut(i).unwrap();
+            backer.1 += msg.amount
         }
         None => p.funding_raised.push((info.sender, msg.amount)),
     }
