@@ -47,7 +47,7 @@ pub fn execute(
 }
 
 pub fn create_project(deps: DepsMut, msg: MsgCreateProject) -> Result<Response, ContractError> {
-    msg.validate()?;
+    // msg.validate()?;
 
     let mut state = STATE.load(deps.storage)?;
     let id = state.projects.len() as u64;
