@@ -1,25 +1,428 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "QueryMsg",
-  "anyOf": [
+  "oneOf": [
+    {
+      "description": "Return the owner of the given token, error if token does not exist Return type: OwnerOfResponse",
+      "type": "object",
+      "required": [
+        "owner_of"
+      ],
+      "properties": {
+        "owner_of": {
+          "type": "object",
+          "required": [
+            "token_id"
+          ],
+          "properties": {
+            "include_expired": {
+              "description": "unset or false will filter out expired approvals, you must set to true to see them",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "List all operators that can access all of the owner's tokens Return type: `ApprovedForAllResponse`",
+      "type": "object",
+      "required": [
+        "approved_for_all"
+      ],
+      "properties": {
+        "approved_for_all": {
+          "type": "object",
+          "required": [
+            "owner"
+          ],
+          "properties": {
+            "include_expired": {
+              "description": "unset or false will filter out expired items, you must set to true to see them",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "limit": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "owner": {
+              "type": "string"
+            },
+            "start_after": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Total number of tokens issued",
+      "type": "object",
+      "required": [
+        "num_tokens"
+      ],
+      "properties": {
+        "num_tokens": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "With MetaData Extension. Returns top-level metadata about the contract: `ContractInfoResponse`",
+      "type": "object",
+      "required": [
+        "contract_info"
+      ],
+      "properties": {
+        "contract_info": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "With MetaData Extension. Returns metadata about one particular token, based on *ERC721 Metadata JSON Schema* but directly from the contract: `NftInfoResponse`",
+      "type": "object",
+      "required": [
+        "nft_info"
+      ],
+      "properties": {
+        "nft_info": {
+          "type": "object",
+          "required": [
+            "token_id"
+          ],
+          "properties": {
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "How many changes has occurred to this token",
+      "type": "object",
+      "required": [
+        "change_dynamics"
+      ],
+      "properties": {
+        "change_dynamics": {
+          "type": "object",
+          "required": [
+            "token_id"
+          ],
+          "properties": {
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "With MetaData Extension. Returns metadata about one particular token, based on *ERC721 Metadata JSON Schema* but directly from the contract: `NftInfoResponse`",
+      "type": "object",
+      "required": [
+        "image_info"
+      ],
+      "properties": {
+        "image_info": {
+          "type": "object",
+          "required": [
+            "img_uri"
+          ],
+          "properties": {
+            "img_uri": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "With MetaData Extension. Returns the result of both `NftInfo` and `OwnerOf` as one query as an optimization for clients: `AllNftInfo`",
+      "type": "object",
+      "required": [
+        "all_nft_info"
+      ],
+      "properties": {
+        "all_nft_info": {
+          "type": "object",
+          "required": [
+            "token_id"
+          ],
+          "properties": {
+            "include_expired": {
+              "description": "unset or false will filter out expired approvals, you must set to true to see them",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "With Enumerable extension. Returns all tokens owned by the given address, [] if unset. Return type: TokensResponse.",
+      "type": "object",
+      "required": [
+        "tokens"
+      ],
+      "properties": {
+        "tokens": {
+          "type": "object",
+          "required": [
+            "owner"
+          ],
+          "properties": {
+            "limit": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "owner": {
+              "type": "string"
+            },
+            "start_after": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "With Enumerable extension. Requires pagination. Lists all token_ids controlled by the contract. Return type: TokensResponse.",
+      "type": "object",
+      "required": [
+        "all_tokens"
+      ],
+      "properties": {
+        "all_tokens": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "start_after": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
     {
       "type": "object",
       "required": [
-        "get_project"
+        "all_img_tokens"
       ],
       "properties": {
-        "get_project": {
+        "all_img_tokens": {
           "type": "object",
-          "required": [
-            "id"
-          ],
           "properties": {
-            "id": {
-              "type": "integer",
-              "format": "uint64",
+            "limit": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint32",
               "minimum": 0.0
+            },
+            "start_after": {
+              "type": [
+                "string",
+                "null"
+              ]
             }
           }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "With Enumerable extension. Requires pagination. Lists all token_ids controlled by the contract. Return type: TokensResponse.",
+      "type": "object",
+      "required": [
+        "range_tokens"
+      ],
+      "properties": {
+        "range_tokens": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "start_after": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Return the minter",
+      "type": "object",
+      "required": [
+        "minter"
+      ],
+      "properties": {
+        "minter": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Return the public key that is being used to validate messages with signatures",
+      "type": "object",
+      "required": [
+        "public_key"
+      ],
+      "properties": {
+        "public_key": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Return the mint amount",
+      "type": "object",
+      "required": [
+        "mint_amount"
+      ],
+      "properties": {
+        "mint_amount": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Return the change amount and multiplier",
+      "type": "object",
+      "required": [
+        "change_details"
+      ],
+      "properties": {
+        "change_details": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Return the total supply",
+      "type": "object",
+      "required": [
+        "total_supply"
+      ],
+      "properties": {
+        "total_supply": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Return the prefix for the images. defaults to ipfs://",
+      "type": "object",
+      "required": [
+        "image_prefix"
+      ],
+      "properties": {
+        "image_prefix": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Returns top-level NFT metadata about the contract: `NFTContractInfoResponse`",
+      "type": "object",
+      "required": [
+        "nft_contract_info"
+      ],
+      "properties": {
+        "nft_contract_info": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Returns top-level NFT metadata about the trait maps:",
+      "type": "object",
+      "required": [
+        "nft_contract_trait_map"
+      ],
+      "properties": {
+        "nft_contract_trait_map": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Returns top-level NFT metadata about the keybase signature:",
+      "type": "object",
+      "required": [
+        "nft_contract_keybase_verification"
+      ],
+      "properties": {
+        "nft_contract_keybase_verification": {
+          "type": "object"
         }
       },
       "additionalProperties": false

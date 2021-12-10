@@ -1,90 +1,801 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "ExecuteMsg",
-  "anyOf": [
+  "description": "This is like Cw721ExecuteMsg but we add a Mint command for an owner to make this stand-alone. You will likely want to remove mint and use other control logic in any contract that inherits this.",
+  "oneOf": [
     {
+      "description": "Transfer is a base message to move a token to another account without triggering actions",
       "type": "object",
       "required": [
-        "create_project"
+        "transfer_nft"
       ],
       "properties": {
-        "create_project": {
-          "$ref": "#/definitions/MsgCreateProject"
+        "transfer_nft": {
+          "type": "object",
+          "required": [
+            "recipient",
+            "token_id"
+          ],
+          "properties": {
+            "recipient": {
+              "type": "string"
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
         }
       },
       "additionalProperties": false
     },
     {
+      "description": "Send is a base message to transfer a token to a contract and trigger an action on the receiving contract.",
       "type": "object",
       "required": [
-        "back_project"
+        "send_nft"
       ],
       "properties": {
-        "back_project": {
-          "$ref": "#/definitions/MsgBackProject"
+        "send_nft": {
+          "type": "object",
+          "required": [
+            "contract",
+            "msg",
+            "token_id"
+          ],
+          "properties": {
+            "contract": {
+              "type": "string"
+            },
+            "msg": {
+              "$ref": "#/definitions/Binary"
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Allows operator to transfer / send the token from the owner's account. If expiration is set, then this allowance has a time/height limit",
+      "type": "object",
+      "required": [
+        "approve"
+      ],
+      "properties": {
+        "approve": {
+          "type": "object",
+          "required": [
+            "spender",
+            "token_id"
+          ],
+          "properties": {
+            "expires": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Expiration"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "spender": {
+              "type": "string"
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Remove previously granted Approval",
+      "type": "object",
+      "required": [
+        "revoke"
+      ],
+      "properties": {
+        "revoke": {
+          "type": "object",
+          "required": [
+            "spender",
+            "token_id"
+          ],
+          "properties": {
+            "spender": {
+              "type": "string"
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Allows operator to transfer / send any token from the owner's account. If expiration is set, then this allowance has a time/height limit",
+      "type": "object",
+      "required": [
+        "approve_all"
+      ],
+      "properties": {
+        "approve_all": {
+          "type": "object",
+          "required": [
+            "operator"
+          ],
+          "properties": {
+            "expires": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Expiration"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "operator": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Remove previously granted ApproveAll permission",
+      "type": "object",
+      "required": [
+        "revoke_all"
+      ],
+      "properties": {
+        "revoke_all": {
+          "type": "object",
+          "required": [
+            "operator"
+          ],
+          "properties": {
+            "operator": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Mint a new NFT, can only be called by the contract minter",
+      "type": "object",
+      "required": [
+        "mint"
+      ],
+      "properties": {
+        "mint": {
+          "$ref": "#/definitions/MintMsg_for_Metadata"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Burn an NFT the sender has access to",
+      "type": "object",
+      "required": [
+        "burn"
+      ],
+      "properties": {
+        "burn": {
+          "type": "object",
+          "required": [
+            "token_id"
+          ],
+          "properties": {
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Allow a buyer to mint a NFT directly",
+      "type": "object",
+      "required": [
+        "buy"
+      ],
+      "properties": {
+        "buy": {
+          "$ref": "#/definitions/BuyMsg"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Owner function: Sends coins in the contract to admin",
+      "type": "object",
+      "required": [
+        "sweep"
+      ],
+      "properties": {
+        "sweep": {
+          "type": "object",
+          "required": [
+            "denom"
+          ],
+          "properties": {
+            "denom": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Owner function: change public key",
+      "type": "object",
+      "required": [
+        "set_public_key"
+      ],
+      "properties": {
+        "set_public_key": {
+          "type": "object",
+          "required": [
+            "public_key"
+          ],
+          "properties": {
+            "public_key": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Owner function: change mint price (uluna)",
+      "type": "object",
+      "required": [
+        "set_mint_amount"
+      ],
+      "properties": {
+        "set_mint_amount": {
+          "type": "object",
+          "required": [
+            "mint_amount"
+          ],
+          "properties": {
+            "mint_amount": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Owner function: change change #times multipler)",
+      "type": "object",
+      "required": [
+        "set_change_times_multiplier"
+      ],
+      "properties": {
+        "set_change_times_multiplier": {
+          "type": "object",
+          "required": [
+            "change_multiplier"
+          ],
+          "properties": {
+            "change_multiplier": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Owner function: change change name price (uusd)",
+      "type": "object",
+      "required": [
+        "set_change_amount"
+      ],
+      "properties": {
+        "set_change_amount": {
+          "type": "object",
+          "required": [
+            "change_amount"
+          ],
+          "properties": {
+            "change_amount": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "User message: allow owner to change status field of NFT",
+      "type": "object",
+      "required": [
+        "set_token_status"
+      ],
+      "properties": {
+        "set_token_status": {
+          "type": "object",
+          "required": [
+            "status",
+            "token_id"
+          ],
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "User message: allow owner to change name & description field of NFT",
+      "type": "object",
+      "required": [
+        "set_token_name_description"
+      ],
+      "properties": {
+        "set_token_name_description": {
+          "type": "object",
+          "required": [
+            "token_id"
+          ],
+          "properties": {
+            "description": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "token_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Owner message: change prefix for images. defaults to ipfs://",
+      "type": "object",
+      "required": [
+        "set_image_prefix"
+      ],
+      "properties": {
+        "set_image_prefix": {
+          "type": "object",
+          "required": [
+            "prefix"
+          ],
+          "properties": {
+            "prefix": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Owner message: Set information about the NFT Collection",
+      "type": "object",
+      "required": [
+        "set_nft_contract_info"
+      ],
+      "properties": {
+        "set_nft_contract_info": {
+          "type": "object",
+          "required": [
+            "listing"
+          ],
+          "properties": {
+            "banner_src": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "description": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "discord": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "github": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "listing": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/NftListing"
+              }
+            },
+            "src": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "telegram": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "twitter": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Owner message: Set information about the NFT Traits",
+      "type": "object",
+      "required": [
+        "set_nft_contract_trait_info"
+      ],
+      "properties": {
+        "set_nft_contract_trait_info": {
+          "type": "object",
+          "required": [
+            "trait_map"
+          ],
+          "properties": {
+            "trait_map": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/NftTraitSummary"
+                    }
+                  }
+                ],
+                "maxItems": 2,
+                "minItems": 2
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Owner message: Set keybase verification string",
+      "type": "object",
+      "required": [
+        "set_nft_contract_keybase_verification"
+      ],
+      "properties": {
+        "set_nft_contract_keybase_verification": {
+          "type": "object",
+          "required": [
+            "message"
+          ],
+          "properties": {
+            "message": {
+              "type": "string"
+            }
+          }
         }
       },
       "additionalProperties": false
     }
   ],
   "definitions": {
-    "MsgBackProject": {
+    "Binary": {
+      "description": "Binary is a wrapper around Vec<u8> to add base64 de/serialization with serde. It also adds some helper methods to help encode inline.\n\nThis is only needed as serde-json-{core,wasm} has a horrible encoding for Vec<u8>",
+      "type": "string"
+    },
+    "BuyMetaData": {
       "type": "object",
       "required": [
-        "amount",
-        "id"
+        "female_name",
+        "male_name"
       ],
       "properties": {
-        "amount": {
-          "type": "integer",
-          "format": "uint64",
-          "minimum": 0.0
+        "female_name": {
+          "type": "string"
         },
-        "id": {
-          "type": "integer",
-          "format": "uint64",
-          "minimum": 0.0
+        "male_name": {
+          "type": "string"
         }
       }
     },
-    "MsgCreateProject": {
+    "BuyMsg": {
       "type": "object",
       "required": [
-        "denom",
-        "description",
-        "funding_requested",
-        "legal_contract",
-        "lockup_period",
-        "thumbnail",
-        "title"
+        "attributes",
+        "buy_metadata",
+        "signature"
       ],
       "properties": {
-        "denom": {
+        "attributes": {
+          "description": "attributes should be a json string",
           "type": "string"
         },
-        "description": {
-          "type": "string"
+        "buy_metadata": {
+          "description": "other attributes that can come from the purchaser",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BuyMetaData"
+            }
+          ]
         },
-        "funding_requested": {
-          "type": "integer",
-          "format": "uint64",
-          "minimum": 0.0
-        },
-        "legal_contract": {
-          "type": "string"
-        },
-        "lockup_period": {
-          "type": "integer",
-          "format": "uint64",
-          "minimum": 0.0
-        },
-        "thumbnail": {
-          "type": "string"
-        },
-        "title": {
+        "signature": {
+          "description": "Unique ID of the NFT. This is generated via attributes Universal resource identifier for this NFT Should point to a JSON file that conforms to the ERC721 signature that proves the request was initiated by a trusted party",
           "type": "string"
         }
       }
+    },
+    "Decimal": {
+      "description": "A fixed-point decimal value with 18 fractional digits, i.e. Decimal(1_000_000_000_000_000_000) == 1.0\n\nThe greatest possible value that can be represented is 340282366920938463463.374607431768211455 (which is (2^128 - 1) / 10^18)",
+      "type": "string"
+    },
+    "Expiration": {
+      "description": "Expiration represents a point in time when some event happens. It can compare with a BlockInfo and will return is_expired() == true once the condition is hit (and for every block in the future)",
+      "oneOf": [
+        {
+          "description": "AtHeight will expire when `env.block.height` >= height",
+          "type": "object",
+          "required": [
+            "at_height"
+          ],
+          "properties": {
+            "at_height": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "description": "AtTime will expire when `env.block.time` >= time",
+          "type": "object",
+          "required": [
+            "at_time"
+          ],
+          "properties": {
+            "at_time": {
+              "$ref": "#/definitions/Timestamp"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "description": "Never will never expire. Used to express the empty variant",
+          "type": "object",
+          "required": [
+            "never"
+          ],
+          "properties": {
+            "never": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Metadata": {
+      "type": "object",
+      "required": [
+        "token_uri"
+      ],
+      "properties": {
+        "animation_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "attributes": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/Trait"
+          }
+        },
+        "background_color": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_status": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "external_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "image": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "image_data": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "token_uri": {
+          "type": "string"
+        },
+        "youtube_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "MintMsg_for_Metadata": {
+      "type": "object",
+      "required": [
+        "extension",
+        "owner",
+        "token_id"
+      ],
+      "properties": {
+        "extension": {
+          "description": "Any custom extension used by this contract",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Metadata"
+            }
+          ]
+        },
+        "owner": {
+          "description": "The owner of the newly minter NFT",
+          "type": "string"
+        },
+        "token_id": {
+          "description": "Unique ID of the NFT",
+          "type": "string"
+        },
+        "token_uri": {
+          "description": "Universal resource identifier for this NFT Should point to a JSON file that conforms to the ERC721 Metadata JSON Schema",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "NftListing": {
+      "type": "object",
+      "required": [
+        "label",
+        "listing_uri"
+      ],
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "listing_uri": {
+          "type": "string"
+        }
+      }
+    },
+    "NftTraitSummary": {
+      "type": "object",
+      "required": [
+        "label",
+        "value"
+      ],
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/Decimal"
+        }
+      }
+    },
+    "Timestamp": {
+      "description": "A point in time in nanosecond precision.\n\nThis type can represent times from 1970-01-01T00:00:00Z to 2554-07-21T23:34:33Z.\n\n## Examples\n\n``` # use cosmwasm_std::Timestamp; let ts = Timestamp::from_nanos(1_000_000_202); assert_eq!(ts.nanos(), 1_000_000_202); assert_eq!(ts.seconds(), 1); assert_eq!(ts.subsec_nanos(), 202);\n\nlet ts = ts.plus_seconds(2); assert_eq!(ts.nanos(), 3_000_000_202); assert_eq!(ts.seconds(), 3); assert_eq!(ts.subsec_nanos(), 202); ```",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Uint64"
+        }
+      ]
+    },
+    "Trait": {
+      "type": "object",
+      "required": [
+        "trait_type",
+        "value"
+      ],
+      "properties": {
+        "display_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "trait_type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "Uint64": {
+      "description": "A thin wrapper around u64 that is using strings for JSON encoding/decoding, such that the full u64 range can be used for clients that convert JSON numbers to floats, like JavaScript and jq.\n\n# Examples\n\nUse `from` to create instances of this and `u64` to get the value out:\n\n``` # use cosmwasm_std::Uint64; let a = Uint64::from(42u64); assert_eq!(a.u64(), 42);\n\nlet b = Uint64::from(70u32); assert_eq!(b.u64(), 70); ```",
+      "type": "string"
     }
   }
 }
