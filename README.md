@@ -1,13 +1,6 @@
 # Starbreeder_NFT
 ## TL;DR
-This is a working CW721 contract for the [Terra](https://terra.money/) blockchain, and is in active use by the [TerraPeeps](https://terrapeeps.com) project.
-
-It serves TerraPeeps needs. It may serve yours.
-
-If you think this was useful, feel free to delegate to the [PFC](https://station.terra.money/validator/terravaloper12g4nkvsjjnl0t7fvq3hdcw7y8dc9fq69nyeu9q) validator. It will help defray the costs.
-
-[PFC](https://twitter.com/PFC_Validator) - As Terra is all about Pink Fluffy Characters right... feel free to drop me a line
-
+This is a working CW721 contract for the [Terra](https://terra.money/) blockchain, specifically adjusted for STARBREEDER projects and governance.
 
 ## Details
 
